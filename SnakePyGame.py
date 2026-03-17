@@ -13,6 +13,7 @@ dark_green = (43, 51, 24)
 cell_size = 30
 number_of_cells = 30
 
+
 class Food:
     def __init__(self):
         self.position = self.generate_random_pos()
@@ -27,6 +28,14 @@ class Food:
         position = Vector2(x, y)
         return position
 
+class Snake:
+    def __init__(self):
+        self.body = [Vector2(6,9), Vector2(5,9), Vector2(4,9), Vector2(3,9)]  #Dodati glavu ovde
+    def draw(self):
+        for segment in self.body:
+            segment_rect = (segment.x * cell_size, segment.y * cell_size, cell_size, cell_size)
+            pygame.draw.rect(screen, dark_green, segment_rect, 2, 11)
+
 
 screen = pygame.display.set_mode((cell_size * number_of_cells, cell_size * number_of_cells))
 
@@ -35,9 +44,12 @@ pygame.display.set_caption("Zmijica - Snake")
 clock = pygame.time.Clock()
 
 food = Food()
+snake = Snake()
 food_surface = pygame.image.load("Graphics/food.png")
 # food_surface = pygame.transform.scale(image,(cell_size, cell_size))
 
+
+#Game Loop
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,9 +61,10 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-
+    #Drawing game items
     screen.fill(green)
     food.draw()
+    snake.draw()
 
 
     pygame.display.update()
