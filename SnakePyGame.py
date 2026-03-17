@@ -1,42 +1,59 @@
 import sys
 import pygame
+from pygame.examples.cursors import image
 from pygame.math import Vector2
-from pygame.display import set_caption
+import random
 
 
 pygame.init()
 
-neon_green = (0, 255, 70) # Snake
-near_black = (10, 10, 10) #Background
-red = (255, 50, 50)   # Food
+green = (173, 204, 96)
+dark_green = (43, 51, 24)
 
 cell_size = 30
 number_of_cells = 30
 
 class Food:
     def __init__(self):
-        self.position = Vector2(5, 6)
+        self.position = self.generate_random_pos()
 
     def draw(self):
         food_rect = pygame.Rect(self.position.x * cell_size, self.position.y * cell_size, cell_size, cell_size)
+        screen.blit(food_surface, food_rect)
 
-screen = pygame.display.set_mode((cell_size * number_of_cells, cell_size * number_of_cells)) #Dimenzije ekrana   30x30 je 900x900 ekran
+    def generate_random_pos(self):
+        x = random.randint(0, number_of_cells -1)
+        y = random.randint(0, number_of_cells -1)
+        position = Vector2(x, y)
+        return position
 
-pygame.display.set_caption("Zmijica - Snake") #Naslov
+
+screen = pygame.display.set_mode((cell_size * number_of_cells, cell_size * number_of_cells))
+
+pygame.display.set_caption("Zmijica - Snake")
 
 clock = pygame.time.Clock()
-`
+
+food = Food()
+food_surface = pygame.image.load("Graphics/food.png")
+# food_surface = pygame.transform.scale(image,(cell_size, cell_size))
+
 while True:
-    for event in pygame.event.get(): # Game loop logic, searches for an event and works if no event quits
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.KEYDOWN: # So you dont have to press the mousebutton all the time :D
+
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
 
-    screen.fill(near_black) # Coloring the background
+
+    screen.fill(green)
+    food.draw()
+
+
     pygame.display.update()
-    clock.tick(60) # To make the game run in 60 fps
+    clock.tick(60)
 
